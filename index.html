@@ -9,6 +9,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
 
 <style>
+  /* Основные стили */
   body {
     margin: 0;
     background-color: black;
@@ -65,7 +66,7 @@
     font-family: 'Press Start 2P', cursive;
     font-size: 1rem;
     margin-top: 10px;
-    min-height: 60px; /* чтобы не скачковать при появлении текста */
+    min-height: 60px;
   }
 
   /* Кнопка */
@@ -225,7 +226,7 @@
 
   .social-icons a {
     display: inline-block;
-    width: 40px; /* Размер иконок */
+    width: 40px;
     height: 40px;
   }
 
@@ -245,6 +246,100 @@
     color: #888;
     font-family: 'Press Start 2P', cursive;
     z-index: 2;
+  }
+
+  /* МЕДИА-ЗАПРОСЫ для мобильных устройств */
+  @media (max-width: 768px) {
+    /* Центрированный текст чуть ниже и с меньшим шрифтом */
+    .centered-text {
+      top: 20%;
+      padding: 10px;
+      max-width: 90%;
+      width: 90%;
+    }
+
+    /* Заголовки "Об игре" и "Новости" */
+    h2 {
+      font-size: 1rem;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    /* Размер изображений рядом с заголовками */
+    .header-image {
+      width: 1rem;
+      height: 1rem;
+      margin-bottom: 0.5rem;
+    }
+
+    /* Тексты разделов */
+    #typing-text, #news-text {
+      font-size: 0.8rem;
+      margin-top: 10px;
+    }
+
+    /* Кнопка */
+    .btn {
+      font-size: 1rem;
+      padding: 8px 16px;
+      display: block;
+      width: 80%;
+      margin: 10px auto;
+    }
+
+    /* Графика слева (внизу) */
+    .left-gif {
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      max-width: 80%;
+    }
+
+    /* Шапка (на мобильных) */
+    .header {
+      flex-direction: column;
+      align-items: center;
+      padding: 20px 10px;
+    }
+
+    .studio-info {
+      flex-direction: column;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+
+    .logo {
+      width: 40px;
+      height: 40px;
+      margin-bottom: 10px;
+    }
+
+    .studio-name {
+      font-size: 1.5rem;
+    }
+
+    /* Заголовок в центре */
+    .header-title {
+      font-size: 2rem;
+    }
+
+    /* Ошибки */
+    .error-window {
+      width: 80%;
+      max-width: 250px;
+    }
+
+    /* Область соцсетей снизу справа */
+    .social-icons {
+      bottom: 10px;
+      right: 10px;
+    }
+
+    /* Надпись внизу */
+    .footer {
+      font-size: 0.5rem;
+    }
   }
 </style>
 </head>
@@ -283,10 +378,10 @@
 <!-- Иконки соцсетей справа снизу (замените src и href на свои) -->
 <div class="social-icons">
   <a href="https://discord.gg/4VPTxzHjeT" target="_blank" rel="noopener">
-    <img src="images/ds.png" alt="Facebook" />
+    <img src="images/ds.png" alt="Discord" />
   </a>
   <a href="https://www.youtube.com/channel/UCuAlgKCKI9HYx8_b4q2DYWw" target="_blank" rel="noopener">
-    <img src="images/yt.png" alt="Twitter" />
+    <img src="images/yt.png" alt="YouTube" />
   </a>
 </div>
 
