@@ -9,7 +9,7 @@
 <meta name="description" content="StartUp Error — захватывающий ретро-пиксельный платформер и рогалик-боевик" />
 <meta name="keywords" content="игра, платформер, пиксельная графика, ретро, аркада, инди игра, старт ап, рогалик, стартап еррор, startup error" />
 
-<!-- ВАШ МЕТА-ТЕГ ДЛЯ ПОДТВЕРЖДЕНИЯ -->
+<!-- Мета-тег подтверждения Google -->
 <meta name="google-site-verification" content="7yjXgucpQwUCVhavkzu6Zcd-js42aJkqSTW5Z_D5uLY" />
 
 <!-- Иконка сайта (favicon) -->
@@ -63,6 +63,7 @@
     font-size: 1.2rem;
     display: flex;
     align-items: center;
+    color: #0f0;
   }
 
   /* Изображения рядом с заголовками */
@@ -72,11 +73,13 @@
     margin-right: 0.5rem;
   }
 
+  /* Тексты для разделов */
   #typing-text, #news-text {
     font-family: 'Press Start 2P', cursive;
     font-size: 1rem;
     margin-top: 10px;
     min-height: 60px;
+    color: #0f0;
   }
 
   /* Кнопка */
@@ -135,12 +138,14 @@
     margin-right: 15px;
   }
 
+  /* Сделаю шрифт для названия студии таким же, как и в остальном */
   .studio-name {
-    font-family: 'Press Start 2 P', cursive;
+    font-family: 'Press Start 2P', cursive;
     font-size: 2rem;
     color: #0f0;
     opacity: 0;
     animation: appearLogo 2s forwards;
+    margin: 0;
   }
 
   @keyframes appearLogo {
@@ -157,7 +162,6 @@
     font-size: 2.5rem;
     color: #0f0;
     margin: 0;
-    z-index: 2;
   }
 
   /* Ошибки */
@@ -343,6 +347,7 @@
 <div class="header">
   <div class="studio-info">
     <img src="images/5377800780242874851.jpg" alt="Логотип" class="logo" />
+    <!-- Сделаю название студии тем же шрифтом, что и остальной сайт -->
     <div class="studio-name">Meowzap</div>
   </div>
   <h1 class="header-title">StartUp Error</h1>
@@ -407,7 +412,7 @@
     typingElement.textContent = '';
     newsElement.textContent = '';
 
-    // Запускаем оба сразу
+    // Запускаем оба текста параллельно
     typeText(typingElement, gameDescription, 50);
     typeText(newsElement, newsText, 50);
   });
