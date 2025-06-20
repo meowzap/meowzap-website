@@ -138,19 +138,21 @@
     margin-right: 15px;
   }
 
-  /* Сделаю шрифт для названия студии таким же, как и в остальном */
+  /* Сделаю шрифт для названия студии таким же, что и остальной сайт */
   .studio-name {
     font-family: 'Press Start 2P', cursive;
     font-size: 2rem;
     color: #0f0;
-    opacity: 0;
-    animation: appearLogo 2s forwards;
     margin: 0;
   }
 
-  @keyframes appearLogo {
-    0% { opacity: 0; transform: translateY(-10px); }
-    100% { opacity: 1; transform: translateY(0); }
+  /* Анимация шейка */
+  @keyframes shake {
+    0% { transform: translate(0, 0); }
+    25% { transform: translate(2px, -2px); }
+    50% { transform: translate(-2px, 2px); }
+    75% { transform: translate(2px, 2px); }
+    100% { transform: translate(0, 0); }
   }
 
   .header-title {
@@ -347,8 +349,8 @@
 <div class="header">
   <div class="studio-info">
     <img src="images/5377800780242874851.jpg" alt="Логотип" class="logo" />
-    <!-- Сделаю название студии тем же шрифтом, что и остальной сайт -->
-    <div class="studio-name">Meowzap</div>
+    <!-- Название студии с тем же шрифтом -->
+    <h1 class="studio-name">Meowzap</h1>
   </div>
   <h1 class="header-title">StartUp Error</h1>
 </div>
@@ -366,7 +368,7 @@
 <!-- Область ошибок -->
 <div class="error-container"></div>
 
-<!-- Соцсети снизу справа (замените src и href по необходимости) -->
+<!-- Соцсети снизу справа -->
 <div class="social-icons">
   <a href="https://discord.gg/4VPTxzHjeT" target="_blank" rel="noopener">
     <img src="images/ds.png" alt="Discord" />
@@ -376,7 +378,7 @@
   </a>
 </div>
 
-<!-- Надпись внизу в центре -->
+<!-- Надпись внизу -->
 <div class="footer">
   Meowzap 2025. Все права защищены. Поддержка: <a href="mailto:meowzapgames@gmail.com" style="color:#0f0; text-decoration:underline;">meowzapgames@gmail.com</a>
 </div>
