@@ -80,6 +80,7 @@
     margin-top: 10px;
     min-height: 60px;
     color: #0f0;
+    white-space: pre-wrap; /* чтобы сохранять форматирование */
   }
 
   /* Кнопка */
@@ -252,6 +253,27 @@
     object-fit: contain;
   }
 
+  /* Новое место соцсетей - справа, чуть правее, сдвинутое влево на 15px */
+  .additional-social {
+    position: fixed;
+    bottom: 20px; /* снизу */
+    right: 120px; /* на 15px левее чем было (если было 80px) */
+    display: flex;
+    gap: 10px;
+    z-index: 3;
+  }
+  /* Размер иконки оставляем как у стандартных */
+  .additional-social a {
+    display: inline-block;
+    width: 40px; /* такой же размер, как у других */
+    height: 40px;
+  }
+  .additional-social img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+
   /* Надпись снизу по центру */
   .footer {
     position: fixed;
@@ -349,7 +371,7 @@
 <div class="header">
   <div class="studio-info">
     <img src="images/5377800780242874851.jpg" alt="Логотип" class="logo" />
-    <!-- Название студии с тем же шрифтом -->
+    <!-- Название студии -->
     <h1 class="studio-name">Meowzap</h1>
   </div>
   <h1 class="header-title">StartUp Error</h1>
@@ -368,13 +390,20 @@
 <!-- Область ошибок -->
 <div class="error-container"></div>
 
-<!-- Соцсети снизу справа -->
+<!-- Основные соцсети (справа) -->
 <div class="social-icons">
   <a href="https://discord.gg/4VPTxzHjeT" target="_blank" rel="noopener">
     <img src="images/ds.png" alt="Discord" />
   </a>
   <a href="https://www.youtube.com/channel/UCuAlgKCKI9HYx8_b4q2DYWw" target="_blank" rel="noopener">
     <img src="images/yt.png" alt="YouTube" />
+  </a>
+</div>
+
+<!-- Новое место соцсетей - справа, чуть правее, сдвинутое влево на 15px -->
+<div class="additional-social">
+  <a href="https://t.me/meowzapgames" target="_blank" rel="noopener">
+    <img src="images/tg.png" alt="Website" />
   </a>
 </div>
 
