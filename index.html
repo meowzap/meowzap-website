@@ -43,6 +43,8 @@
     background-repeat: no-repeat;
     background-position: center;
     z-index: -1;
+    /* Добавим плавное изменение фона */
+    transition: background-image 1s ease-in-out;
   }
 
   /* Центрированный блок с текстом, поднят выше */
@@ -126,13 +128,11 @@
     border-bottom: 2px solid #0f0;
     position: relative;
     z-index: 2;
-    flex-wrap: wrap; /* добавлено для адаптивности */
   }
 
   .studio-info {
     display: flex;
     align-items: center;
-    flex-wrap: wrap; /* добавлено */
   }
 
   .logo {
@@ -259,7 +259,7 @@
   .additional-social {
     position: fixed;
     bottom: 20px; /* снизу */
-    right: 120px; /* на 15px левее чем было (если было 135) */
+    right: 120px; /* на 15px левее чем было (если было 135px) */
     display: flex;
     gap: 10px;
     z-index: 3;
@@ -286,12 +286,10 @@
     color: #888;
     font-family: 'Press Start 2P', cursive;
     z-index: 2;
-    padding: 0 10px;
   }
 
-  /* МЕДИА-ЗАПРОСЫ для мобильных устройств и более длинной страницы */
+  /* МЕДИА-ЗАПРОСЫ для мобильных устройств */
   @media (max-width: 768px) {
-    /* Общие настройки */
     .centered-text {
       top: 20%;
       padding: 10px;
@@ -326,7 +324,6 @@
       transform: translateX(-50%);
       max-width: 80%;
     }
-    /* Адаптация шапки */
     .header {
       flex-direction: column;
       align-items: center;
@@ -347,43 +344,17 @@
     }
     .header-title {
       font-size: 2rem;
-      position: static;
-      transform: none;
-      margin-top: 10px;
     }
-    /* Увеличиваем высоту ошибок, чтобы они не мешали */
     .error-window {
       width: 80%;
       max-width: 250px;
     }
-    /* Соцсети снизу */
     .social-icons {
       bottom: 10px;
       right: 10px;
     }
-    .additional-social {
-      bottom: 10px;
-      right: 80px;
-    }
-    /* Подвал */
     .footer {
       font-size: 0.5rem;
-    }
-  }
-
-  /* Еще один медиазапрос для очень маленьких экранов */
-  @media (max-width: 480px) {
-    .studio-name {
-      font-size: 1.2rem;
-    }
-    .header-title {
-      font-size: 1.5rem;
-    }
-    #typing-text, #news-text {
-      font-size: 0.7rem;
-    }
-    .btn {
-      font-size: 0.9rem;
     }
   }
 </style>
@@ -434,7 +405,7 @@
 <!-- Новое место соцсетей - справа, чуть правее, сдвинутое влево на 15px -->
 <div class="additional-social">
   <a href="https://t.me/meowzapgames" target="_blank" rel="noopener">
-    <img src="images/tg.png" alt="Website" />
+    <img src="images/tg.png" alt="Telegram" />
   </a>
 </div>
 
@@ -479,7 +450,7 @@
     typeText(newsElement, newsText, 50);
   });
 
-  // Меняет фон каждые 10 секунд
+  // Массив GIF для фона
   const backgroundGifs = [
     'images/bg1.gif',
     'images/bg2.gif',
@@ -496,6 +467,7 @@
 
   // Изначально задаём случайный фон
   errorBackground.style.backgroundImage = `url('${getRandomGif()}')`;
+  // Меняем фон каждые 10 секунд
   setInterval(() => {
     errorBackground.style.backgroundImage = `url('${getRandomGif()}')`;
   }, 10000);
@@ -528,19 +500,14 @@
       'Недостаточно памяти для выполнения операции.',
       'Наш компьютер задумался над вечностью... Подождите немного!',
     ];
-    const message = messages[Math.floor(Math.random() * messages.length)];
+    const message = messages[Math.floor(Math.random()*messages.length)];
 
     error.innerHTML = `
-      <div class="title-bar">
-        <div>Windows XP</div>
-        <div class="buttons">
-          <div class="button"></div>
-          <div class="button"></div>
-          <div class="button"></div>
-        </div>
-      </div>
-      <div class="window-content">${message}</div>
-    `;
+      <div class="title-bar"> 
+        <div>Windows XP</div> 
+        <div class="buttons"> <div class="button"></div> <div class="button"></div> <div class="button"></div> </div> 
+      </div> 
+      <div class="window-content">${message}</div>`;
     document.querySelector('.error-container').appendChild(error);
     setTimeout(() => { error.classList.add('fly-start'); }, 20);
     setTimeout(() => { error.remove(); }, 2200);
@@ -548,7 +515,7 @@
 
   setInterval(createErrorWindow, 2000);
 
-  // Анимация шейка
+  // Анимация шейка + шевеление элементов при загрузке
   window.addEventListener('load', () => {
     const headerText = document.querySelector('.header-title');
     const headerLogo = document.querySelector('.logo');
@@ -569,11 +536,11 @@
       }
       shakeAnim();
     }
+
     shake(headerLogo);
     shake(nameText);
     shake(headerText);
   });
 </script>
-
 </body>
 </html>
