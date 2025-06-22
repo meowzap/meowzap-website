@@ -7,10 +7,11 @@
 
 <!-- Мета-теги для поисковых систем -->
 <meta name="description" content="StartUp Error — захватывающий ретро-пиксельный платформер и рогалик-боевик" />
-<meta name="keywords" content="игра, платформер, пиксельная графика, ретро, аркада, инди игра, старт ап, рогалик, стартап еррор, startup error" />
+<meta name="keywords" content="игра, платформер, пиксельная графика, ретро, аркада, инди игра, старт ап, рогалик, стартап еррор, startup error, meowzap, мяузап, игры" />
 
 <!-- Мета-тег подтверждения Google -->
 <meta name="google-site-verification" content="7yjXgucpQwUCVhavkzu6Zcd-js42aJkqSTW5Z_D5uLY" />
+<meta name="yandex-verification" content="6d56a71867f59dc8" />
 
 <!-- Иконка сайта (favicon) -->
 <link rel="icon" href="images/12.ico" type="image/x-icon" />
@@ -43,6 +44,8 @@
     background-repeat: no-repeat;
     background-position: center;
     z-index: -1;
+    /* Добавим плавное изменение фона */
+    transition: background-image 1s ease-in-out;
   }
 
   /* Центрированный блок с текстом, поднят выше */
@@ -257,7 +260,7 @@
   .additional-social {
     position: fixed;
     bottom: 20px; /* снизу */
-    right: 120px; /* на 15px левее чем было (если было 80px) */
+    right: 120px; /* на 15px левее чем было (если было 135px) */
     display: flex;
     gap: 10px;
     z-index: 3;
@@ -403,7 +406,7 @@
 <!-- Новое место соцсетей - справа, чуть правее, сдвинутое влево на 15px -->
 <div class="additional-social">
   <a href="https://t.me/meowzapgames" target="_blank" rel="noopener">
-    <img src="images/tg.png" alt="Website" />
+    <img src="images/tg.png" alt="Telegram" />
   </a>
 </div>
 
@@ -448,7 +451,7 @@
     typeText(newsElement, newsText, 50);
   });
 
-  // Меняет фон каждые 10 секунд
+  // Массив GIF для фона
   const backgroundGifs = [
     'images/bg1.gif',
     'images/bg2.gif',
@@ -465,6 +468,7 @@
 
   // Изначально задаём случайный фон
   errorBackground.style.backgroundImage = `url('${getRandomGif()}')`;
+  // Меняем фон каждые 10 секунд
   setInterval(() => {
     errorBackground.style.backgroundImage = `url('${getRandomGif()}')`;
   }, 10000);
@@ -497,19 +501,14 @@
       'Недостаточно памяти для выполнения операции.',
       'Наш компьютер задумался над вечностью... Подождите немного!',
     ];
-    const message = messages[Math.floor(Math.random() * messages.length)];
+    const message = messages[Math.floor(Math.random()*messages.length)];
 
     error.innerHTML = `
-      <div class="title-bar">
-        <div>Windows XP</div>
-        <div class="buttons">
-          <div class="button"></div>
-          <div class="button"></div>
-          <div class="button"></div>
-        </div>
-      </div>
-      <div class="window-content">${message}</div>
-    `;
+      <div class="title-bar"> 
+        <div>Windows XP</div> 
+        <div class="buttons"> <div class="button"></div> <div class="button"></div> <div class="button"></div> </div> 
+      </div> 
+      <div class="window-content">${message}</div>`;
     document.querySelector('.error-container').appendChild(error);
     setTimeout(() => { error.classList.add('fly-start'); }, 20);
     setTimeout(() => { error.remove(); }, 2200);
@@ -517,7 +516,7 @@
 
   setInterval(createErrorWindow, 2000);
 
-  // Анимация шейка
+  // Анимация шейка + шевеление элементов при загрузке
   window.addEventListener('load', () => {
     const headerText = document.querySelector('.header-title');
     const headerLogo = document.querySelector('.logo');
@@ -538,11 +537,11 @@
       }
       shakeAnim();
     }
+
     shake(headerLogo);
     shake(nameText);
     shake(headerText);
   });
 </script>
-
 </body>
 </html>
