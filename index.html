@@ -44,7 +44,6 @@
     background-repeat: no-repeat;
     background-position: center;
     z-index: -1;
-    transition: background-image 1s ease-in-out;
   }
 
   /* Центрированный блок с текстом, поднят выше */
@@ -116,7 +115,6 @@
     z-index: 1;
     max-width: 500px;
     height: auto;
-    display: block; /* видим на ПК по умолчанию */
   }
 
   /* Заголовок сайта (наверху) */
@@ -292,89 +290,37 @@
 
   /* МЕДИА-ЗАПРОСЫ для мобильных устройств */
   @media (max-width: 768px) {
-    /* Центр с текстом остается */
-    .centered-text {
-      top: 20%;
-      padding: 10px;
-      max-width: 90%;
-      width: 90%;
-    }
-    h2 {
-      font-size: 1rem;
-      flex-direction: column;
-      align-items: center;
-    }
-    .header-image {
-      width: 1rem;
-      height: 1rem;
-      margin-bottom: 0.5rem;
-    }
-    #typing-text, #news-text {
-      font-size: 0.8rem;
-      margin-top: 10px;
-    }
-    .btn {
-      font-size: 1rem;
-      padding: 8px 16px;
-      display: block;
-      width: 80%;
-      margin: 10px auto;
-    }
-    /* скрывать гиф на мобильных */
-    .left-gif {
+    /* скрывать ПК шапку */
+    #desktop-header {
       display: none;
     }
-    .header {
-      flex-direction: column;
+    /* показывать мобильную шапку как flex с двумя углами */
+    #mobile-header {
+      display: flex;
+      justify-content: space-between;
       align-items: center;
-      padding: 20px 10px;
+      padding: 10px 15px;
+      position: fixed;
+      top: 0;
+      width: 100%;
+      background: black;
+      z-index: 10;
     }
-    .studio-info {
-      flex-direction: row;
-      align-items: center;
-      margin-bottom: 10px;
+    /* Названия в разных углах */
+    #mobile-header .mobile-header-left,
+    #mobile-header .mobile-header-right {
+      font-family: 'Press Start 2P', cursive;
+      font-size: 1rem; /* уменьшить размер */
+      color: #0f0;
+      margin: 0;
     }
-    .logo {
-      width: 40px;
-      height: 40px;
-      margin-right: 10px;
+    /* Расположить их по углам */
+    #mobile-header .mobile-header-left {
+      align-self: flex-start;
     }
-    .studio-name {
-      font-size: 1.5rem;
+    #mobile-header .mobile-header-right {
+      align-self: flex-end;
     }
-    .header-title {
-      font-size: 2rem;
-    }
-    .error-window {
-      width: 80%;
-      max-width: 250px;
-    }
-    .social-icons {
-      bottom: 10px;
-      right: 10px;
-    }
-    .footer {
-      font-size: 0.5rem;
-    }
-  }
-
-  /* Стиль для мобильного сообщения с печатанием */
-  #mobile-message {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    font-family: 'Press Start 2P', cursive;
-    font-size: 0.9rem;
-    color: #d90404;
-    background: rgba(0,0,0,0.7);
-    padding: 20px;
-    border-radius: 10px;
-    max-width: 90%;
-    text-align: center;
-    z-index: 4;
-    line-height: 1.2;
-    display: none;
   }
 </style>
 </head>
@@ -397,13 +343,10 @@
   <h1 class="header-title">StartUp Error</h1>
 </div>
 
-<!-- Мобильная версия: мини-иконка и название -->
+<!-- Мобильная версия: названия по углам -->
 <div class="header" id="mobile-header" style="display:none;">
-  <div class="studio-info" style="display:flex; align-items:center;">
-    <img src="images/5377800780242874851.jpg" alt="Логотип" class="mini-icon" id="mini-icon" />
-    <h1 class="studio-name" style="margin:0;">Meowzap</h1>
-  </div>
-  <h1 class="header-title">StartUp Error</h1>
+  <div class="mobile-header-left">StartUp Error</div>
+  <div class="mobile-header-right">Meowzap</div>
 </div>
 
 <!-- Центр с текстом -->
