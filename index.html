@@ -452,20 +452,37 @@
     return /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
   }
 
-  if (isMobile()) {
-    // Для мобильных
+if (isMobile()) {
+    // Для мобильных устройств
     document.addEventListener('DOMContentLoaded', () => {
-      document.getElementById('text-section').style.display = 'none';
+      // скрываем шапку
       document.querySelector('.header').style.display = 'none';
-      document.querySelector('.error-background').style.display = 'none';
-      document.querySelector('.left-gif').style.display = 'none';
+
+      // показываем блок с мини-иконкой и названием
+      document.getElementById('mobile-header').style.display = 'flex';
+
+      // скрываем остальные элементы
+      document.getElementById('text-section').style.display = 'none';
       document.querySelector('.social-icons').style.display = 'none';
       document.querySelector('.additional-social').style.display = 'none';
       document.querySelector('.footer').style.display = 'none';
 
-      // Показываем мобильный хедер с мини-иконкой и названием
-      document.getElementById('mobile-header').style.display = 'flex';
+      // показываем фон с гифами
+      const bgDiv = document.querySelector('.error-background');
+      const backgroundGifs = ['images/bg1.gif','images/bg2.gif','images/bg3.gif','images/bg4.gif'];
+      function getRandomGif() {
+        return backgroundGifs[Math.floor(Math.random() * backgroundGifs.length)];
+      }
+      if (bgDiv) {
+        bgDiv.style.backgroundImage = `url('${getRandomGif()}')`;
+      }
+      setInterval(() => {
+        if (bgDiv) {
+          bgDiv.style.backgroundImage = `url('${getRandomGif()}')`;
+        }
+      }, 10000);
 
+      // создаем сообщение
       const msgDiv = document.getElementById('mobile-message');
       msgDiv.style.display = 'block';
 
@@ -482,25 +499,11 @@
       }
       typeSymbol();
 
-      // фон и название
-      const bgDiv = document.querySelector('.error-background');
-      const backgroundGifs = ['images/bg1.gif','images/bg2.gif','images/bg3.gif','images/bg4.gif'];
-      function getRandomGif() {
-        return backgroundGifs[Math.floor(Math.random() * backgroundGifs.length)];
-      }
-      if (bgDiv) {
-        bgDiv.style.backgroundImage = `url('${getRandomGif()}')`;
-      }
-      setInterval(() => {
-        if (bgDiv) {
-          bgDiv.style.backgroundImage = `url('${getRandomGif()}')`;
-        }
-      }, 10000);
-
       // создаем ошибочные окна
       function createErrorWindow() {
         const error = document.createElement('div');
         error.className = 'error-window';
+
         const topPos = Math.random() * (window.innerHeight - 150);
         const leftPos = Math.random() * (window.innerWidth - 300);
         error.style.top = topPos + 'px';
