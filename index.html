@@ -44,7 +44,6 @@
     background-repeat: no-repeat;
     background-position: center;
     z-index: -1;
-    /* Добавим плавное изменение фона */
     transition: background-image 1s ease-in-out;
   }
 
@@ -60,20 +59,25 @@
     padding: 20px;
   }
 
-  /* Заголовки "Об игре" и "Новости" */
-  h2 {
-    margin: 20px 0 10px 0;
-    font-size: 1.2rem;
+  /* Заголовки "Об игре" и "Новости" с иконками */
+  .section-header {
     display: flex;
     align-items: center;
-    color: #0f0;
+    margin-top: 20px;
+    margin-bottom: 10px;
   }
 
-  /* Изображения рядом с заголовками */
-  .header-image {
+  .section-icon {
     width: 1.2rem;
     height: 1.2rem;
     margin-right: 0.5rem;
+  }
+
+  .section-title {
+    font-family: 'Press Start 2P', cursive;
+    font-size: 1.2rem;
+    color: #0f0;
+    margin: 0;
   }
 
   /* Тексты для разделов */
@@ -83,30 +87,24 @@
     margin-top: 10px;
     min-height: 60px;
     color: #0f0;
-    white-space: pre-wrap; /* чтобы сохранять форматирование */
+    white-space: pre-wrap;
   }
 
-  /* Кнопка */
-  .btn {
-    display: inline-block;
+  /* Кнопка "Играть сейчас" */
+  .play-button {
+    margin-top: 15px;
     padding: 10px 20px;
-    background-color: #0f0;
-    color: #000;
     font-family: 'Press Start 2P', cursive;
     font-size: 1.2rem;
+    background-color: #0f0;
+    color: #000;
     border: none;
     cursor: pointer;
-    margin-top: 20px;
-    transition: all 0.2s;
-    text-decoration: none;
+    transition: background-color 0.2s;
   }
-  .btn:hover {
+  .play-button:hover {
     background-color: #00f;
     color: #fff;
-  }
-  .btn:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
   }
 
   /* Графика слева */
@@ -142,12 +140,19 @@
     margin-right: 15px;
   }
 
-  /* Сделаю шрифт для названия студии таким же, что и остальной сайт */
+  /* Название студии для ПК */
   .studio-name {
     font-family: 'Press Start 2P', cursive;
     font-size: 2rem;
     color: #0f0;
     margin: 0;
+  }
+
+  /* Мини-иконка для мобильной версии */
+  .mini-icon {
+    width: 20px;
+    height: 20px;
+    margin-right: 8px;
   }
 
   /* Анимация шейка */
@@ -259,16 +264,15 @@
   /* Новое место соцсетей - справа, чуть правее, сдвинутое влево на 15px */
   .additional-social {
     position: fixed;
-    bottom: 20px; /* снизу */
-    right: 120px; /* на 15px левее чем было (если было 135px) */
+    bottom: 20px;
+    right: 120px;
     display: flex;
     gap: 10px;
     z-index: 3;
   }
-  /* Размер иконки оставляем как у стандартных */
   .additional-social a {
     display: inline-block;
-    width: 40px; /* такой же размер, как у других */
+    width: 40px;
     height: 40px;
   }
   .additional-social img {
@@ -277,7 +281,7 @@
     object-fit: contain;
   }
 
-  /* Надпись снизу по центру */
+  /* Надпись внизу */
   .footer {
     position: fixed;
     bottom: 10px;
@@ -291,6 +295,7 @@
 
   /* МЕДИА-ЗАПРОСЫ для мобильных устройств */
   @media (max-width: 768px) {
+    /* Центр с текстом остается */
     .centered-text {
       top: 20%;
       padding: 10px;
@@ -331,14 +336,14 @@
       padding: 20px 10px;
     }
     .studio-info {
-      flex-direction: column;
+      flex-direction: row;
       align-items: center;
       margin-bottom: 10px;
     }
     .logo {
       width: 40px;
       height: 40px;
-      margin-bottom: 10px;
+      margin-right: 10px;
     }
     .studio-name {
       font-size: 1.5rem;
@@ -358,6 +363,25 @@
       font-size: 0.5rem;
     }
   }
+
+  /* Стиль для мобильного сообщения с печатанием */
+  #mobile-message {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-family: 'Press Start 2P', cursive;
+    font-size: 0.9rem;
+    color: #d90404;
+    background: rgba(0,0,0,0.7);
+    padding: 20px;
+    border-radius: 10px;
+    max-width: 90%;
+    text-align: center;
+    z-index: 4;
+    line-height: 1.2;
+    display: none;
+  }
 </style>
 </head>
 <body>
@@ -374,20 +398,15 @@
 <div class="header">
   <div class="studio-info">
     <img src="images/5377800780242874851.jpg" alt="Логотип" class="logo" />
-    <!-- Название студии -->
+    <!-- Для ПК: название и иконка -->
     <h1 class="studio-name">Meowzap</h1>
   </div>
   <h1 class="header-title">StartUp Error</h1>
 </div>
 
-<!-- Центр с текстом -->
+<!-- Центр с текстом и/или сообщение -->
 <div class="centered-text" id="text-section">
-  <h2><img src="images/1.png" alt="Об игре" class="header-image">Об игре</h2>
-  <p id="typing-text"></p>
-  <h2><img src="images/2.png" alt="Новости" class="header-image">Новости</h2>
-  <p id="news-text"></p>
-  <div id="news-list"></div>
-  <a href="images/meowzap.zip" class="btn" id="play-button" download>Играть сейчас</a>
+  <!-- Здесь будут динамически добавляться разделы -->
 </div>
 
 <!-- Область ошибок -->
@@ -398,7 +417,7 @@
   <a href="https://discord.gg/4VPTxzHjeT" target="_blank" rel="noopener">
     <img src="images/ds.png" alt="Discord" />
   </a>
-  <a href="https://www.youtube.com/channel/UCuAlgKCKI9HYx8_b4q2DYWw" target="_blank" rel="noopener">
+  <a href="https://www.youtube.com/channel/UUuAlgKCKI9HYx8_b4q2DYWw" target="_blank" rel="noopener">
     <img src="images/yt.png" alt="YouTube" />
   </a>
 </div>
@@ -410,138 +429,238 @@
   </a>
 </div>
 
+<!-- Для мобильной версии: мини-иконка слева от названия -->
+<div class="header" id="mobile-header" style="display:none;">
+  <div class="studio-info" style="display:flex; align-items:center;">
+    <img src="images/5377800780242874851.jpg" alt="Логотип" class="mini-icon" id="mini-icon" />
+    <h1 class="studio-name" style="margin:0;">Meowzap</h1>
+  </div>
+  <h1 class="header-title">StartUp Error</h1>
+</div>
+
 <!-- Надпись внизу -->
 <div class="footer">
   Meowzap 2025. Все права защищены. Поддержка: <a href="mailto:meowzapgames@gmail.com" style="color:#0f0; text-decoration:underline;">meowzapgames@gmail.com</a>
 </div>
 
+<!-- Блок для мобильного сообщения -->
+<div id="mobile-message"></div>
+
 <script>
-  // Обработка клика по кнопке
-  const playBtn = document.getElementById('play-button');
-
-  // Функция для печати текста по символам
-  function typeText(element, text, speed = 50, callback) {
-    let idx = 0;
-    function typeSymbol() {
-      if (idx < text.length) {
-        element.textContent += text.charAt(idx);
-        idx++;
-        setTimeout(typeSymbol, speed);
-      } else if (callback) {
-        callback();
-      }
-    }
-    typeSymbol();
+  // Проверка устройства
+  function isMobile() {
+    return /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
   }
 
-  // Тексты для разделов
-  const gameDescription = "StartUp Error — захватывающий рогалик-боевик в стиле пиксельной 2D-графики. Динамичный top-down шутер. В роли отважного робота-рыцаря Нейро вам предстоит спасти королевство Роттерхем от коварных вирусов, захвативших его и весь компьютер. Впереди — динамичные сражения, опасные ловушки и эпические битвы. Спасите принцессу Сайт и восстановите мир во всех папках!";
-  const newsText = "Данная игра еще находится в активной разработке! Просим немного Вашего терпения! А пока что вы можете оценить бесплатный бета-тест игры. Кликайте на кнопку <Играть сейчас>!";
+  if (isMobile()) {
+    // Для мобильных
+    document.addEventListener('DOMContentLoaded', () => {
+      document.getElementById('text-section').style.display = 'none';
+      document.querySelector('.header').style.display = 'none';
+      document.querySelector('.error-background').style.display = 'none';
+      document.querySelector('.left-gif').style.display = 'none';
+      document.querySelector('.social-icons').style.display = 'none';
+      document.querySelector('.additional-social').style.display = 'none';
+      document.querySelector('.footer').style.display = 'none';
 
-  window.addEventListener('load', () => {
-    const typingElement = document.getElementById('typing-text');
-    const newsElement = document.getElementById('news-text');
+      // Показываем мобильный хедер с мини-иконкой и названием
+      document.getElementById('mobile-header').style.display = 'flex';
 
-    // Очищаем
-    typingElement.textContent = '';
-    newsElement.textContent = '';
+      const msgDiv = document.getElementById('mobile-message');
+      msgDiv.style.display = 'block';
 
-    // Запускаем оба текста параллельно
-    typeText(typingElement, gameDescription, 50);
-    typeText(newsElement, newsText, 50);
-  });
+      const messageText = "Ошибка! Данный сайт поддерживается только на устройствах ПК ради моего удобства и безопасности. (не) Прошу извинения! С уважением, Троян вашего компьютера :3";
 
-  // Массив GIF для фона
-  const backgroundGifs = [
-    'images/bg1.gif',
-    'images/bg2.gif',
-    'images/bg3.gif',
-    'images/bg4.gif'
-  ];
-
-  const errorBackground = document.querySelector('.error-background');
-
-  function getRandomGif() {
-    const index = Math.floor(Math.random() * backgroundGifs.length);
-    return backgroundGifs[index];
-  }
-
-  // Изначально задаём случайный фон
-  errorBackground.style.backgroundImage = `url('${getRandomGif()}')`;
-  // Меняем фон каждые 10 секунд
-  setInterval(() => {
-    errorBackground.style.backgroundImage = `url('${getRandomGif()}')`;
-  }, 10000);
-
-  // Реакция на клики для курсора
-  document.addEventListener('mousedown', () => {
-    document.body.classList.add('click-active');
-  });
-  document.addEventListener('mouseup', () => {
-    document.body.classList.remove('click-active');
-  });
-
-  // Создавать ошибки
-  function createErrorWindow() {
-    const error = document.createElement('div');
-    error.className = 'error-window';
-
-    const topPos = Math.random() * (window.innerHeight - 150);
-    const leftPos = Math.random() * (window.innerWidth - 300);
-    error.style.top = topPos + 'px';
-    error.style.left = leftPos + 'px';
-
-    const messages = [
-      'Память переполнена!',
-      'Ошибка ядра!',
-      'Не удалось подключиться к серверу.',
-      'Обнаружена критическая ошибка.',
-      'Нажмите Ctrl+Alt+Del и сделайте вдох: ваш компьютер тоже иногда устаёт!.',
-      'Драйвер видеокарты сломан.',
-      'Недостаточно памяти для выполнения операции.',
-      'Наш компьютер задумался над вечностью... Подождите немного!',
-    ];
-    const message = messages[Math.floor(Math.random()*messages.length)];
-
-    error.innerHTML = `
-      <div class="title-bar"> 
-        <div>Windows XP</div> 
-        <div class="buttons"> <div class="button"></div> <div class="button"></div> <div class="button"></div> </div> 
-      </div> 
-      <div class="window-content">${message}</div>`;
-    document.querySelector('.error-container').appendChild(error);
-    setTimeout(() => { error.classList.add('fly-start'); }, 20);
-    setTimeout(() => { error.remove(); }, 2200);
-  }
-
-  setInterval(createErrorWindow, 2000);
-
-  // Анимация шейка + шевеление элементов при загрузке
-  window.addEventListener('load', () => {
-    const headerText = document.querySelector('.header-title');
-    const headerLogo = document.querySelector('.logo');
-    const nameText = document.querySelector('.studio-name');
-
-    function shake(element, duration = 300, intensity = 2) {
-      const start = Date.now();
-      function shakeAnim() {
-        const elapsed = Date.now() - start;
-        if (elapsed < duration) {
-          const dx = (Math.random() - 0.5) * intensity;
-          const dy = (Math.random() - 0.5) * intensity;
-          element.style.transform = `translate(${dx}px, ${dy}px)`;
-          requestAnimationFrame(shakeAnim);
-        } else {
-          element.style.transform = '';
+      // печать текста
+      let currentIdx = 0;
+      function typeSymbol() {
+        if (currentIdx < messageText.length) {
+          msgDiv.textContent += messageText.charAt(currentIdx);
+          currentIdx++;
+          setTimeout(typeSymbol, 50);
         }
       }
-      shakeAnim();
-    }
+      typeSymbol();
 
-    shake(headerLogo);
-    shake(nameText);
-    shake(headerText);
-  });
+      // фон и название
+      const bgDiv = document.querySelector('.error-background');
+      const backgroundGifs = ['images/bg1.gif','images/bg2.gif','images/bg3.gif','images/bg4.gif'];
+      function getRandomGif() {
+        return backgroundGifs[Math.floor(Math.random() * backgroundGifs.length)];
+      }
+      if (bgDiv) {
+        bgDiv.style.backgroundImage = `url('${getRandomGif()}')`;
+      }
+      setInterval(() => {
+        if (bgDiv) {
+          bgDiv.style.backgroundImage = `url('${getRandomGif()}')`;
+        }
+      }, 10000);
+
+      // создаем ошибочные окна
+      function createErrorWindow() {
+        const error = document.createElement('div');
+        error.className = 'error-window';
+        const topPos = Math.random() * (window.innerHeight - 150);
+        const leftPos = Math.random() * (window.innerWidth - 300);
+        error.style.top = topPos + 'px';
+        error.style.left = leftPos + 'px';
+
+        const messages = [
+          'Память переполнена!', 'Ошибка ядра!', 'Не удалось подключиться к серверу.',
+          'Обнаружена критическая ошибка.', 'Нажмите Ctrl+Alt+Del и сделайте вдох: ваш компьютер тоже иногда устаёт!.',
+          'Драйвер видеокарты сломан.', 'Недостаточно памяти для выполнения операции.', 'Наш компьютер задумался над вечностью... Подождите немного!'
+        ];
+        const message = messages[Math.floor(Math.random() * messages.length)];
+
+        error.innerHTML = `
+          <div class="title-bar"> 
+            <div>Windows XP</div> 
+            <div class="buttons"> <div class="button"></div> <div class="button"></div> <div class="button"></div> </div> 
+          </div> 
+          <div class="window-content">${message}</div>`;
+        document.querySelector('.error-container').appendChild(error);
+        setTimeout(() => { error.classList.add('fly-start'); }, 20);
+        setTimeout(() => { error.remove(); }, 2200);
+      }
+      setInterval(createErrorWindow, 2000);
+    });
+  } else {
+    // Для ПК
+    // Создаем разделы "Об игре" и "Новости" с иконками
+    const sectionContainer = document.createElement('div');
+    sectionContainer.innerHTML = `
+      <div class="section-header">
+        <img src="images/1.png" class="section-icon" alt="Об игре" />
+        <h2 class="section-title">Об игре</h2>
+      </div>
+      <div id="typing-text"></div>
+      <div class="section-header">
+        <img src="images/2.png" class="section-icon" alt="Новости" />
+        <h2 class="section-title">Новости</h2>
+      </div>
+      <div id="news-text"></div>
+      <button class="play-button" id="play-now">Играть сейчас</button>
+    `;
+    document.getElementById('text-section').appendChild(sectionContainer);
+
+    // Вывод текста
+    const typingEl = document.getElementById('typing-text');
+    const newsEl = document.getElementById('news-text');
+
+    const gameDescription = "StartUp Error — захватывающий рогалик-боевик в стиле пиксельной 2D-графики. Динамичный top-down шутер. В роли отважного робота-рыцаря Нейро вам предстоит спасти королевство Роттерхем от коварных вирусов, захвативших его и весь компьютер. Впереди — динамичные сражения, опасные ловушки и эпические битвы. Спасите принцессу Сайт и восстановите мир во всех папках!";
+    const newsText = "Данная игра еще находится в активной разработке! Просим немного Вашего терпения! А пока что вы можете оценить бесплатный бета-тест игры. Кликайте на кнопку <Играть сейчас>!";
+
+    window.addEventListener('load', () => {
+      // Печать текста
+      function typeText(element, text, speed = 50, callback) {
+        let idx = 0;
+        function typeSymbol() {
+          if (idx < text.length) {
+            element.textContent += text.charAt(idx);
+            idx++;
+            setTimeout(typeSymbol, speed);
+          } else if (callback) {
+            callback();
+          }
+        }
+        typeSymbol();
+      }
+      // Запуск печати
+      typeText(typingEl, gameDescription, 50);
+      typeText(newsEl, newsText, 50);
+    });
+
+    const backgroundGifs = ['images/bg1.gif','images/bg2.gif','images/bg3.gif','images/bg4.gif'];
+    const errorBackground = document.querySelector('.error-background');
+    function getRandomGif() {
+      return backgroundGifs[Math.floor(Math.random() * backgroundGifs.length)];
+    }
+    errorBackground.style.backgroundImage = `url('${getRandomGif()}')`;
+    setInterval(() => {
+      errorBackground.style.backgroundImage = `url('${getRandomGif()}')`;
+    }, 10000);
+
+    document.addEventListener('mousedown', () => {
+      document.body.classList.add('click-active');
+    });
+    document.addEventListener('mouseup', () => {
+      document.body.classList.remove('click-active');
+    });
+
+    function createErrorWindow() {
+      const error = document.createElement('div');
+      error.className = 'error-window';
+      const topPos = Math.random() * (window.innerHeight - 150);
+      const leftPos = Math.random() * (window.innerWidth - 300);
+      error.style.top = topPos + 'px';
+      error.style.left = leftPos + 'px';
+
+      const messages = [
+        'Память переполнена!', 'Ошибка ядра!', 'Не удалось подключиться к серверу.',
+        'Обнаружена критическая ошибка.', 'Нажмите Ctrl+Alt+Del и сделайте вдох: ваш компьютер тоже иногда устаёт!.',
+        'Драйвер видеокарты сломан.', 'Недостаточно памяти для выполнения операции.', 'Наш компьютер задумался над вечностью... Подождите немного!'
+      ];
+      const message = messages[Math.floor(Math.random() * messages.length)];
+
+      error.innerHTML = `
+        <div class="title-bar"> 
+          <div>Windows XP</div> 
+          <div class="buttons"> <div class="button"></div> <div class="button"></div> <div class="button"></div> </div> 
+        </div> 
+        <div class="window-content">${message}</div>`;
+      document.querySelector('.error-container').appendChild(error);
+      setTimeout(() => { error.classList.add('fly-start'); }, 20);
+      setTimeout(() => { error.remove(); }, 2200);
+    }
+    setInterval(createErrorWindow, 2000);
+
+    // Обработка кнопки "Играть сейчас"
+    document.getElementById('play-now').addEventListener('click', () => {
+      const link = document.createElement('a');
+      link.href = 'images/meowzap.zip'; // путь к файлу
+      link.download = 'StartUp Error.zip'; // имя файла
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    });
+
+    // Анимация шейка
+    window.addEventListener('load', () => {
+      const headerText = document.querySelector('.header-title');
+      const headerLogo = document.querySelector('.logo');
+      const nameText = document.querySelector('.studio-name');
+
+      function shake(element, duration = 300, intensity = 2) {
+        const start = Date.now();
+        function shakeAnim() {
+          const elapsed = Date.now() - start;
+          if (elapsed < duration) {
+            const dx = (Math.random() - 0.5) * intensity;
+            const dy = (Math.random() - 0.5) * intensity;
+            element.style.transform = `translate(${dx}px, ${dy}px)`;
+            requestAnimationFrame(shakeAnim);
+          } else {
+            element.style.transform = '';
+          }
+        }
+        shakeAnim();
+      }
+      shake(headerLogo);
+      shake(nameText);
+      shake(headerText);
+    });
+
+    // Для мобильных: показываем мини-иконку
+    document.addEventListener('DOMContentLoaded', () => {
+      if (isMobile()) {
+        document.getElementById('mobile-header').style.display = 'flex';
+      }
+    });
+  }
+
+  // Обработка для мобильной мини-иконки (если нужно, можно добавить функционал)
+  // Например, при клике можно сделать что-то или оставить как есть
 </script>
 </body>
 </html>
