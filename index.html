@@ -116,6 +116,7 @@
     z-index: 1;
     max-width: 500px;
     height: auto;
+    display: block; /* видим на ПК по умолчанию */
   }
 
   /* Заголовок сайта (наверху) */
@@ -233,10 +234,6 @@
     padding: 4px;
     font-size: 0.8rem;
     color: #000;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: calc(100% - 20px);
   }
 
   /* Область соцсетей снизу справа */
@@ -323,12 +320,9 @@
       width: 80%;
       margin: 10px auto;
     }
+    /* скрывать гиф на мобильных */
     .left-gif {
-      position: fixed;
-      bottom: 20px;
-      left: 50%;
-      transform: translateX(-50%);
-      max-width: 80%;
+      display: none;
     }
     .header {
       flex-direction: column;
@@ -389,30 +383,36 @@
 <!-- Фон -->
 <div class="error-background"></div>
 
-<!-- GIF слева -->
+<!-- GIF слева (по умолчанию видим, на мобильных скрыт через медиазапрос) -->
 <div class="left-gif">
   <img src="images/animation-ezgif.com-resize.gif" alt="Animation" style="width: 100%; height: auto;">
 </div>
 
-<!-- Шапка -->
-<div class="header">
+<!-- Шапка ПК -->
+<div class="header" id="desktop-header">
   <div class="studio-info">
     <img src="images/5377800780242874851.jpg" alt="Логотип" class="logo" />
-    <!-- Для ПК: название и иконка -->
     <h1 class="studio-name">Meowzap</h1>
   </div>
   <h1 class="header-title">StartUp Error</h1>
 </div>
 
-<!-- Центр с текстом и/или сообщение -->
-<div class="centered-text" id="text-section">
-  <!-- Здесь будут динамически добавляться разделы -->
+<!-- Мобильная версия: мини-иконка и название -->
+<div class="header" id="mobile-header" style="display:none;">
+  <div class="studio-info" style="display:flex; align-items:center;">
+    <img src="images/5377800780242874851.jpg" alt="Логотип" class="mini-icon" id="mini-icon" />
+    <h1 class="studio-name" style="margin:0;">Meowzap</h1>
+  </div>
+  <h1 class="header-title">StartUp Error</h1>
 </div>
+
+<!-- Центр с текстом -->
+<div class="centered-text" id="text-section"></div>
 
 <!-- Область ошибок -->
 <div class="error-container"></div>
 
-<!-- Основные соцсети (справа) -->
+<!-- Соцсети справа -->
 <div class="social-icons">
   <a href="https://discord.gg/4VPTxzHjeT" target="_blank" rel="noopener">
     <img src="images/ds.png" alt="Discord" />
@@ -422,20 +422,11 @@
   </a>
 </div>
 
-<!-- Новое место соцсетей - справа, чуть правее, сдвинутое влево на 15px -->
+<!-- Соцсети справа чуть правее -->
 <div class="additional-social">
   <a href="https://t.me/meowzapgames" target="_blank" rel="noopener">
     <img src="images/tg.png" alt="Telegram" />
   </a>
-</div>
-
-<!-- Для мобильной версии: мини-иконка слева от названия -->
-<div class="header" id="mobile-header" style="display:none;">
-  <div class="studio-info" style="display:flex; align-items:center;">
-    <img src="images/5377800780242874851.jpg" alt="Логотип" class="mini-icon" id="mini-icon" />
-    <h1 class="studio-name" style="margin:0;">Meowzap</h1>
-  </div>
-  <h1 class="header-title">StartUp Error</h1>
 </div>
 
 <!-- Надпись внизу -->
@@ -443,52 +434,36 @@
   Meowzap 2025. Все права защищены. Поддержка: <a href="mailto:meowzapgames@gmail.com" style="color:#0f0; text-decoration:underline;">meowzapgames@gmail.com</a>
 </div>
 
-<!-- Блок для мобильного сообщения -->
+<!-- Блок мобильного сообщения -->
 <div id="mobile-message"></div>
 
 <script>
-  // Проверка устройства
   function isMobile() {
     return /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
   }
 
-if (isMobile()) {
-    // Для мобильных устройств
+  if (isMobile()) {
     document.addEventListener('DOMContentLoaded', () => {
-      // скрываем шапку
-      document.querySelector('.header').style.display = 'none';
-
-      // показываем блок с мини-иконкой и названием
+      // Переключение отображения для мобильных
+      document.getElementById('desktop-header').style.display = 'none';
       document.getElementById('mobile-header').style.display = 'flex';
 
-      // скрываем остальные элементы
+      // Показываем фон и гиф
+      document.querySelector('.error-background').style.display = 'block';
+      document.querySelector('.left-gif').style.display = 'none';
+
+      // Остальное
       document.getElementById('text-section').style.display = 'none';
-      document.querySelector('.social-icons').style.display = 'none';
-      document.querySelector('.additional-social').style.display = 'none';
-      document.querySelector('.footer').style.display = 'none';
+      document.querySelector('.social-icons').style.display = 'block';
+      document.querySelector('.additional-social').style.display = 'block';
+      document.querySelector('.footer').style.display = 'block';
 
-      // показываем фон с гифами
-      const bgDiv = document.querySelector('.error-background');
-      const backgroundGifs = ['images/bg1.gif','images/bg2.gif','images/bg3.gif','images/bg4.gif'];
-      function getRandomGif() {
-        return backgroundGifs[Math.floor(Math.random() * backgroundGifs.length)];
-      }
-      if (bgDiv) {
-        bgDiv.style.backgroundImage = `url('${getRandomGif()}')`;
-      }
-      setInterval(() => {
-        if (bgDiv) {
-          bgDiv.style.backgroundImage = `url('${getRandomGif()}')`;
-        }
-      }, 10000);
-
-      // создаем сообщение
+      // показываем моб сообщение и печатаем
       const msgDiv = document.getElementById('mobile-message');
       msgDiv.style.display = 'block';
 
       const messageText = "Ошибка! Данный сайт поддерживается только на устройствах ПК ради моего удобства и безопасности. (не) Прошу извинения! С уважением, Троян вашего компьютера :3";
 
-      // печать текста
       let currentIdx = 0;
       function typeSymbol() {
         if (currentIdx < messageText.length) {
@@ -499,7 +474,7 @@ if (isMobile()) {
       }
       typeSymbol();
 
-      // создаем ошибочные окна
+      // Создание ошибок
       function createErrorWindow() {
         const error = document.createElement('div');
         error.className = 'error-window';
@@ -529,8 +504,7 @@ if (isMobile()) {
       setInterval(createErrorWindow, 2000);
     });
   } else {
-    // Для ПК
-    // Создаем разделы "Об игре" и "Новости" с иконками
+    // ПК версия
     const sectionContainer = document.createElement('div');
     sectionContainer.innerHTML = `
       <div class="section-header">
@@ -547,7 +521,6 @@ if (isMobile()) {
     `;
     document.getElementById('text-section').appendChild(sectionContainer);
 
-    // Вывод текста
     const typingEl = document.getElementById('typing-text');
     const newsEl = document.getElementById('news-text');
 
@@ -555,7 +528,6 @@ if (isMobile()) {
     const newsText = "Данная игра еще находится в активной разработке! Просим немного Вашего терпения! А пока что вы можете оценить бесплатный бета-тест игры. Кликайте на кнопку <Играть сейчас>!";
 
     window.addEventListener('load', () => {
-      // Печать текста
       function typeText(element, text, speed = 50, callback) {
         let idx = 0;
         function typeSymbol() {
@@ -569,7 +541,6 @@ if (isMobile()) {
         }
         typeSymbol();
       }
-      // Запуск печати
       typeText(typingEl, gameDescription, 50);
       typeText(newsEl, newsText, 50);
     });
@@ -618,11 +589,11 @@ if (isMobile()) {
     }
     setInterval(createErrorWindow, 2000);
 
-    // Обработка кнопки "Играть сейчас"
+    // Кнопка "Играть сейчас"
     document.getElementById('play-now').addEventListener('click', () => {
       const link = document.createElement('a');
-      link.href = 'images/meowzap.zip'; // путь к файлу
-      link.download = 'StartUp Error.zip'; // имя файла
+      link.href = 'images/meowzap.zip';
+      link.download = 'StartUp Error.zip';
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
@@ -653,17 +624,7 @@ if (isMobile()) {
       shake(nameText);
       shake(headerText);
     });
-
-    // Для мобильных: показываем мини-иконку
-    document.addEventListener('DOMContentLoaded', () => {
-      if (isMobile()) {
-        document.getElementById('mobile-header').style.display = 'flex';
-      }
-    });
   }
-
-  // Обработка для мобильной мини-иконки (если нужно, можно добавить функционал)
-  // Например, при клике можно сделать что-то или оставить как есть
 </script>
 </body>
 </html>
