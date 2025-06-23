@@ -44,6 +44,8 @@
     background-repeat: no-repeat;
     background-position: center;
     z-index: -1;
+    transition: background-image 1s ease-in-out;
+    display: block;
   }
 
   /* Центрированный блок с текстом, поднят выше */
@@ -115,6 +117,7 @@
     z-index: 1;
     max-width: 500px;
     height: auto;
+    display: block; /* видим на ПК по умолчанию */
   }
 
   /* Заголовок сайта (наверху) */
@@ -290,41 +293,106 @@
 
   /* МЕДИА-ЗАПРОСЫ для мобильных устройств */
   @media (max-width: 768px) {
-    /* скрывать ПК шапку */
+    /* Центр с текстом остается */
+    .centered-text {
+      top: 20%;
+      padding: 10px;
+      max-width: 90%;
+      width: 90%;
+    }
+    h2 {
+      font-size: 1rem;
+      flex-direction: column;
+      align-items: center;
+    }
+    .header-image {
+      width: 1rem;
+      height: 1rem;
+      margin-bottom: 0.5rem;
+    }
+    #typing-text, #news-text {
+      font-size: 0.8rem;
+      margin-top: 10px;
+    }
+    .btn {
+      font-size: 1rem;
+      padding: 8px 16px;
+      display: block;
+      width: 80%;
+      margin: 10px auto;
+    }
+    /* скрывать гиф на мобильных */
+    .left-gif {
+      display: none;
+    }
+    /* Переключение шапок: по умолчанию скрываем ПК, показываем мобильную */
     #desktop-header {
       display: none;
     }
-    /* показывать мобильную шапку как flex с двумя углами */
     #mobile-header {
       display: flex;
-      justify-content: space-between;
+      flex-direction: column;
       align-items: center;
-      padding: 10px 15px;
-      position: fixed;
-      top: 0;
-      width: 100%;
-      background: black;
-      z-index: 10;
     }
-    /* Названия в разных углах */
-    #mobile-header .mobile-header-left,
-    #mobile-header .mobile-header-right {
-      font-family: 'Press Start 2P', cursive;
-      font-size: 1rem; /* уменьшить размер */
-      color: #0f0;
-      margin: 0;
+    /* Адаптация шапки для мобильных */
+    .header {
+      flex-direction: column;
+      align-items: center;
+      padding: 20px 10px;
     }
-    /* Расположить их по углам */
-    #mobile-header .mobile-header-left {
-      align-self: flex-start;
+    .studio-info {
+      flex-direction: row;
+      align-items: center;
+      margin-bottom: 10px;
     }
-    #mobile-header .mobile-header-right {
-      align-self: flex-end;
+    .logo {
+      width: 40px;
+      height: 40px;
+      margin-right: 10px;
     }
+    .studio-name {
+      font-size: 1.5rem;
+    }
+    .header-title {
+      font-size: 2rem;
+    }
+    .error-window {
+      width: 80%;
+      max-width: 250px;
+    }
+    .social-icons {
+      bottom: 10px;
+      right: 10px;
+    }
+    .footer {
+      font-size: 0.5rem;
+    }
+  }
+
+  /* Стиль для мобильного сообщения с печатанием */
+  #mobile-message {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-family: 'Press Start 2P', cursive;
+    font-size: 0.9rem;
+    color: #d90404;
+    background: rgba(0,0,0,0.7);
+    padding: 20px;
+    border-radius: 10px;
+    max-width: 90%;
+    text-align: center;
+    z-index: 4;
+    line-height: 1.2;
+    display: none;
   }
 </style>
 </head>
 <body>
+
+<!-- Встроенный аудио для тихого циклического звука -->
+<audio id="background-sound" src="images/z.mp3" loop autoplay></audio>
 
 <!-- Фон -->
 <div class="error-background"></div>
@@ -334,7 +402,7 @@
   <img src="images/animation-ezgif.com-resize.gif" alt="Animation" style="width: 100%; height: auto;">
 </div>
 
-<!-- Шапка ПК -->
+<!-- ПК версия шапки -->
 <div class="header" id="desktop-header">
   <div class="studio-info">
     <img src="images/5377800780242874851.jpg" alt="Логотип" class="logo" />
@@ -343,10 +411,13 @@
   <h1 class="header-title">StartUp Error</h1>
 </div>
 
-<!-- Мобильная версия: названия по углам -->
+<!-- Мобильная версия шапки, по умолчанию скрыта -->
 <div class="header" id="mobile-header" style="display:none;">
-  <div class="mobile-header-left">StartUp Error</div>
-  <div class="mobile-header-right">Meowzap</div>
+  <div class="studio-info" style="display:flex; align-items:center;">
+    <img src="images/5377800780242874851.jpg" alt="Логотип" class="mini-icon" id="mini-icon" />
+    <h1 class="studio-name" style="margin:0;">Meowzap</h1>
+  </div>
+  <h1 class="header-title">StartUp Error</h1>
 </div>
 
 <!-- Центр с текстом -->
@@ -381,27 +452,30 @@
 <div id="mobile-message"></div>
 
 <script>
+  // Функция определения мобильного устройства
   function isMobile() {
     return /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
   }
 
-  if (isMobile()) {
-    document.addEventListener('DOMContentLoaded', () => {
-      // Переключение отображения для мобильных
+  // Воспроизведение звука
+  const sound = document.getElementById('background-sound');
+  sound.volume = 0.1; // тихий уровень
+  // Пытаемся запустить воспроизведение (может потребовать взаимодействия)
+  sound.play().catch(() => {
+    // Игнорируем, если не удалось
+  });
+
+  document.addEventListener('DOMContentLoaded', () => {
+    if (isMobile()) {
+      // Переключение шапок
       document.getElementById('desktop-header').style.display = 'none';
       document.getElementById('mobile-header').style.display = 'flex';
 
-      // Показываем фон и гиф
+      // Остальной режим для мобильных
       document.querySelector('.error-background').style.display = 'block';
       document.querySelector('.left-gif').style.display = 'none';
 
-      // Остальное
-      document.getElementById('text-section').style.display = 'none';
-      document.querySelector('.social-icons').style.display = 'block';
-      document.querySelector('.additional-social').style.display = 'block';
-      document.querySelector('.footer').style.display = 'block';
-
-      // показываем моб сообщение и печатаем
+      // Показываем и печатаем мобильное сообщение
       const msgDiv = document.getElementById('mobile-message');
       msgDiv.style.display = 'block';
 
@@ -445,129 +519,133 @@
         setTimeout(() => { error.remove(); }, 2200);
       }
       setInterval(createErrorWindow, 2000);
-    });
-  } else {
-    // ПК версия
-    const sectionContainer = document.createElement('div');
-    sectionContainer.innerHTML = `
-      <div class="section-header">
-        <img src="images/1.png" class="section-icon" alt="Об игре" />
-        <h2 class="section-title">Об игре</h2>
-      </div>
-      <div id="typing-text"></div>
-      <div class="section-header">
-        <img src="images/2.png" class="section-icon" alt="Новости" />
-        <h2 class="section-title">Новости</h2>
-      </div>
-      <div id="news-text"></div>
-      <button class="play-button" id="play-now">Играть сейчас</button>
-    `;
-    document.getElementById('text-section').appendChild(sectionContainer);
+    } else {
+      // ПК режим
+      document.getElementById('desktop-header').style.display = 'flex';
+      document.getElementById('mobile-header').style.display = 'none';
 
-    const typingEl = document.getElementById('typing-text');
-    const newsEl = document.getElementById('news-text');
+      // Создаем разделы
+      const sectionContainer = document.createElement('div');
+      sectionContainer.innerHTML = `
+        <div class="section-header">
+          <img src="images/1.png" class="section-icon" alt="Об игре" />
+          <h2 class="section-title">Об игре</h2>
+        </div>
+        <div id="typing-text"></div>
+        <div class="section-header">
+          <img src="images/2.png" class="section-icon" alt="Новости" />
+          <h2 class="section-title">Новости</h2>
+        </div>
+        <div id="news-text"></div>
+        <button class="play-button" id="play-now">Играть сейчас</button>
+      `;
+      document.getElementById('text-section').appendChild(sectionContainer);
 
-    const gameDescription = "StartUp Error — захватывающий рогалик-боевик в стиле пиксельной 2D-графики. Динамичный top-down шутер. В роли отважного робота-рыцаря Нейро вам предстоит спасти королевство Роттерхем от коварных вирусов, захвативших его и весь компьютер. Впереди — динамичные сражения, опасные ловушки и эпические битвы. Спасите принцессу Сайт и восстановите мир во всех папках!";
-    const newsText = "Данная игра еще находится в активной разработке! Просим немного Вашего терпения! А пока что вы можете оценить бесплатный бета-тест игры. Кликайте на кнопку <Играть сейчас>!";
+      const typingEl = document.getElementById('typing-text');
+      const newsEl = document.getElementById('news-text');
 
-    window.addEventListener('load', () => {
-      function typeText(element, text, speed = 50, callback) {
-        let idx = 0;
-        function typeSymbol() {
-          if (idx < text.length) {
-            element.textContent += text.charAt(idx);
-            idx++;
-            setTimeout(typeSymbol, speed);
-          } else if (callback) {
-            callback();
+      const gameDescription = "StartUp Error — захватывающий рогалик-боевик в стиле пиксельной 2D-графики. Динамичный top-down шутер. В роли отважного робота-рыцаря Нейро вам предстоит спасти королевство Роттерхем от коварных вирусов, захвативших его и весь компьютер. Впереди — динамичные сражения, опасные ловушки и эпические битвы. Спасите принцессу Сайт и восстановите мир во всех папках!";
+      const newsText = "Данная игра еще находится в активной разработке! Просим немного Вашего терпения! А пока что вы можете оценить бесплатный бета-тест игры. Кликайте на кнопку <Играть сейчас>!";
+
+      window.addEventListener('load', () => {
+        function typeText(element, text, speed = 50, callback) {
+          let idx = 0;
+          function typeSymbol() {
+            if (idx < text.length) {
+              element.textContent += text.charAt(idx);
+              idx++;
+              setTimeout(typeSymbol, speed);
+            } else if (callback) {
+              callback();
+            }
           }
+          typeSymbol();
         }
-        typeSymbol();
-      }
-      typeText(typingEl, gameDescription, 50);
-      typeText(newsEl, newsText, 50);
-    });
+        typeText(typingEl, gameDescription, 50);
+        typeText(newsEl, newsText, 50);
+      });
 
-    const backgroundGifs = ['images/bg1.gif','images/bg2.gif','images/bg3.gif','images/bg4.gif'];
-    const errorBackground = document.querySelector('.error-background');
-    function getRandomGif() {
-      return backgroundGifs[Math.floor(Math.random() * backgroundGifs.length)];
-    }
-    errorBackground.style.backgroundImage = `url('${getRandomGif()}')`;
-    setInterval(() => {
+      const backgroundGifs = ['images/bg1.gif','images/bg2.gif','images/bg3.gif','images/bg4.gif'];
+      const errorBackground = document.querySelector('.error-background');
+      function getRandomGif() {
+        return backgroundGifs[Math.floor(Math.random() * backgroundGifs.length)];
+      }
       errorBackground.style.backgroundImage = `url('${getRandomGif()}')`;
-    }, 10000);
+      setInterval(() => {
+        errorBackground.style.backgroundImage = `url('${getRandomGif()}')`;
+      }, 10000);
 
-    document.addEventListener('mousedown', () => {
-      document.body.classList.add('click-active');
-    });
-    document.addEventListener('mouseup', () => {
-      document.body.classList.remove('click-active');
-    });
+      document.addEventListener('mousedown', () => {
+        document.body.classList.add('click-active');
+      });
+      document.addEventListener('mouseup', () => {
+        document.body.classList.remove('click-active');
+      });
 
-    function createErrorWindow() {
-      const error = document.createElement('div');
-      error.className = 'error-window';
-      const topPos = Math.random() * (window.innerHeight - 150);
-      const leftPos = Math.random() * (window.innerWidth - 300);
-      error.style.top = topPos + 'px';
-      error.style.left = leftPos + 'px';
+      function createErrorWindow() {
+        const error = document.createElement('div');
+        error.className = 'error-window';
+        const topPos = Math.random() * (window.innerHeight - 150);
+        const leftPos = Math.random() * (window.innerWidth - 300);
+        error.style.top = topPos + 'px';
+        error.style.left = leftPos + 'px';
 
-      const messages = [
-        'Память переполнена!', 'Ошибка ядра!', 'Не удалось подключиться к серверу.',
-        'Обнаружена критическая ошибка.', 'Нажмите Ctrl+Alt+Del и сделайте вдох: ваш компьютер тоже иногда устаёт!.',
-        'Драйвер видеокарты сломан.', 'Недостаточно памяти для выполнения операции.', 'Наш компьютер задумался над вечностью... Подождите немного!'
-      ];
-      const message = messages[Math.floor(Math.random() * messages.length)];
+        const messages = [
+          'Память переполнена!', 'Ошибка ядра!', 'Не удалось подключиться к серверу.',
+          'Обнаружена критическая ошибка.', 'Нажмите Ctrl+Alt+Del и сделайте вдох: ваш компьютер тоже иногда устаётся!.',
+          'Драйвер видеокарты сломан.', 'Недостаточно памяти для выполнения операции.', 'Наш компьютер задумался над вечностью... Подождите немного!'
+        ];
+        const message = messages[Math.floor(Math.random() * messages.length)];
 
-      error.innerHTML = `
-        <div class="title-bar"> 
-          <div>Windows XP</div> 
-          <div class="buttons"> <div class="button"></div> <div class="button"></div> <div class="button"></div> </div> 
-        </div> 
-        <div class="window-content">${message}</div>`;
-      document.querySelector('.error-container').appendChild(error);
-      setTimeout(() => { error.classList.add('fly-start'); }, 20);
-      setTimeout(() => { error.remove(); }, 2200);
-    }
-    setInterval(createErrorWindow, 2000);
-
-    // Кнопка "Играть сейчас"
-    document.getElementById('play-now').addEventListener('click', () => {
-      const link = document.createElement('a');
-      link.href = 'images/meowzap.zip';
-      link.download = 'StartUp Error.zip';
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-    });
-
-    // Анимация шейка
-    window.addEventListener('load', () => {
-      const headerText = document.querySelector('.header-title');
-      const headerLogo = document.querySelector('.logo');
-      const nameText = document.querySelector('.studio-name');
-
-      function shake(element, duration = 300, intensity = 2) {
-        const start = Date.now();
-        function shakeAnim() {
-          const elapsed = Date.now() - start;
-          if (elapsed < duration) {
-            const dx = (Math.random() - 0.5) * intensity;
-            const dy = (Math.random() - 0.5) * intensity;
-            element.style.transform = `translate(${dx}px, ${dy}px)`;
-            requestAnimationFrame(shakeAnim);
-          } else {
-            element.style.transform = '';
-          }
-        }
-        shakeAnim();
+        error.innerHTML = `
+          <div class="title-bar"> 
+            <div>Windows XP</div> 
+            <div class="buttons"> <div class="button"></div> <div class="button"></div> <div class="button"></div> </div> 
+          </div> 
+          <div class="window-content">${message}</div>`;
+        document.querySelector('.error-container').appendChild(error);
+        setTimeout(() => { error.classList.add('fly-start'); }, 20);
+        setTimeout(() => { error.remove(); }, 2200);
       }
-      shake(headerLogo);
-      shake(nameText);
-      shake(headerText);
-    });
-  }
+      setInterval(createErrorWindow, 2000);
+
+      // Кнопка "Играть сейчас"
+      document.getElementById('play-now').addEventListener('click', () => {
+        const link = document.createElement('a');
+        link.href = 'images/meowzap.zip';
+        link.download = 'StartUp Error.zip';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      });
+
+      // Анимация шейка
+      window.addEventListener('load', () => {
+        const headerText = document.querySelector('.header-title');
+        const headerLogo = document.querySelector('.logo');
+        const nameText = document.querySelector('.studio-name');
+
+        function shake(element, duration = 300, intensity = 2) {
+          const start = Date.now();
+          function shakeAnim() {
+            const elapsed = Date.now() - start;
+            if (elapsed < duration) {
+              const dx = (Math.random() - 0.5) * intensity;
+              const dy = (Math.random() - 0.5) * intensity;
+              element.style.transform = `translate(${dx}px, ${dy}px)`;
+              requestAnimationFrame(shakeAnim);
+            } else {
+              element.style.transform = '';
+            }
+          }
+          shakeAnim();
+        }
+        shake(headerLogo);
+        shake(nameText);
+        shake(headerText);
+      });
+    }
+  });
 </script>
 </body>
 </html>
